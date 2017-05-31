@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="angular.min.js"></script>
+</head>
+<body>
+	<div ng-controller="myController">
+		<div my-directive title="Cheer Up">
+			<ul>
+				<li><a href="">do what you want do</a></li>
+				<li><a href="">be what you want to be</a></li>
+				<li><a href="">don`t give up!</a></li>
+				<li><a href="">you can do better!</a></li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module('app',[]);
+		app.controller('myController', function($scope,$element,$transclude,$log){
+			$scope.sayName = function () {
+				$transclude(function () {
+					var a = angular.element('<a>');
+					a.attr('href','http://www.baidu.com');
+					a.text('百度一下');
+					$element.append(a);
+					$log.info('哈哈');
+				})
+			}
+			$scope.greet = function () {
+				console.log('你好');
+			}
+		})
+		app.controller('parentController', ['', function(){
+			
+		}])
+		app.directive('myDirective',function () {
+			return {
+				restrict:"AE",
+				transclude:true,
+				scope:{
+					title:'@',
+					greet:'&greet'
+				},
+				controller:'myController',
+				templateUrl:'./temp/require.html'
+			}
+		})
+	</script>
+</body>
+</html>

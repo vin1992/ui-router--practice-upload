@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <script type="text/javascript" src="js/angular.min.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls-1.3.2.js"></script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div ng-controller="myController">
+    <input type="text" ng-model="selected" uib-typeahead="n.name as n.name +'('+ n.age +')'  for n in names" class="form-control">
+  </div>
+  <script type="text/javascript">
+    var app = angular.module('app',['ui.bootstrap']);
+    app.controller('myController',function ($scope,myService) {
+      $scope.selected = undefined;
+      $scope.names = myService.getInfo();
+    })
+    app.factory('myService',function ($http) {
+    	var serviceIns = {};
+     	serviceIns.getInfo = function () {
+     		return $http.get('./db.json',null).then(function (res) {
+     			return res.data.userInfo;
+     		})
+     	}
+     	return serviceIns;
+    })
+  </script>
+</body>
+</html>

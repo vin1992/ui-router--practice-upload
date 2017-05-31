@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <base href="/" >
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="./assets/angular.min.js"></script>
+  <script type="text/javascript" src="./assets/angular-ui-router.js"></script>
+  <script type="text/javascript" src="./app.js"></script>
+  <!-- <script type="text/javascript" src="./module.js"></script> -->
+  <title>Document</title>
+</head>
+<body>
+    <div >
+        <h2>ui-router 注册引导程序</h2>
+        <a ui-sref="custom">show</a>
+        <a ui-sref="custom.start">start</a>
+        <a ui-sref="custom.email">email</a>
+        <a ui-sref="custom.finish">finish</a>
+        <div ui-view></div>
+    </div>
+</body>
+</html>

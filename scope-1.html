@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script type="text/javascript" src="./angular.min.js"></script>
+  <style>
+    .sidebox .content .header {
+      border: 1px solid #ccc;
+
+    }
+    .sidebox .content {
+      background-color: red;
+    }
+    .sidebox .content ul {
+      list-style: none;
+    }
+  </style>
+</head>
+<body>
+    <div ng-app="myApp" ng-init="myProp='yoyo check it out'" ng-controller="myController">
+        <button ng-click="sayName('fuck you bitch')">call</button>
+        <input type="text" ng-model="propbind">{{propbind}}
+        <div my-null-directive my-bind="propbind" my-copy="yes" my-func="sayName('what are you doing?')"></div>
+        <div my-true-directive></div>
+    </div>
+    <div menubar title="菜单1">
+      <ul>
+        <li>1</li>
+        <li>2</li>
+      </ul>
+    </div>
+    <div menubar title="菜单2">
+      <table>
+        <tr>
+          <td>姓名</td>
+          <td>年龄</td>
+          <td>薪资</td>
+        </tr>
+        <tr>
+          <td>vin_xu</td>
+          <td>21</td>
+          <td>10k</td>
+        </tr>
+        <tr>
+          <td>lisi</td>
+          <td>24</td>
+          <td>8k</td>
+        </tr>
+        <tr>
+          <td>wangwu</td>
+          <td>25</td>
+          <td>20k</td>
+        </tr>
+      </table>
+    </div>
+    <script type="text/javascript">
+      var app = angular.module('myApp',[]);
+      app.controller('myController', ['$scope', function($scope){
+          $scope.sayName = function (words) {
+            alert('I want to say' + words);
+          }
+      }])
+      app.controller('secondController', function($scope,$element,$transclude,$log){
+          $scope.do = function () {
+              $transclude(function () {
+                var a = angular.element('<a>');
+                a.attr('href','http://www.baidu.com');
+                a.text('my link');
+                $element.append(a);
+                $log.info('lalalaa');
+              })
+          }
+           $scope.undo = function () {
+              $transclude(function () {
+                var a = angular.element('<a>');
+              
+                $element.remove(a);
+                $log.info('lalalaa');
+              })
+          }
+      })
+   // 默认情况下 子指令可以访问父元素对应的scope
+      app.directive('myNullDirective',function () {
+        return {
+          restrict:"A",
+          scope:{
+           myCopy:'@',
+           myBind1:'=myBind',
+           myFunc1:'&myFunc',
+          }, //使用独立作用域  模板无法访问外部作用域
+          priority:0,
+          template:'<div>'+
+                        '{{myCopy}}'+
+                        '<input type="text" ng-model="myBind1"/> '+
+                        '<input type="button" name="" value="innercall" ng-click="myFunc1()">' +
+                    '</div>'
+        }
+      })
+       app.directive('myTrueDirective',function () {
+        return {
+          restrict:"A",
+          scope:true,  //使用继承作用域  模板可以访问外部作用域
+          priority:0,
+          template:'<div>指令模板{{myProp}}</div>'
+        }
+      })
+       app.directive('menubar',function () {
+        return {
+          restrict:"AE",
+          scope:{
+            title:'@'
+          },
+          transclude:true,
+          template:'<div class="sidebox">\
+            <div class="content">\
+              <h2 class="header" ng-click="do()">{{title}}</h2>\
+              <div class="content" ng-transclude ng-click="undo()"></div>\
+            </div>\
+          </div>',
+          controller:"secondController"
+        }
+       })
+    </script>
+</body>
+</html>

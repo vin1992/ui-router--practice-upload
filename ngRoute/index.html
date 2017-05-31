@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<base href="/">
+	  <script type="text/javascript" src="./assets/angular.min.js"></script>
+	  <script type="text/javascript" src="./assets/angular-route.js"></script>
+		<script type="text/javascript" src="./app.js"></script>
+    <script type="text/javascript" src="./controllers.js"></script>
+</head>
+<body>
+	<header>
+		<h1>页面头部</h1>
+	</header>
+	<section>
+		<div ng-view></div>
+	</section>
+	<footer>
+		<p>
+			页面底部
+		</p>
+	</footer>
+
+</body>
+</html>

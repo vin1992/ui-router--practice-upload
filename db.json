@@ -1,0 +1,16 @@
+{
+    "userInfo": [
+        {
+            "name": "zhangsan",
+            "age": 21
+        },
+        {
+            "name": "lisi",
+            "age": 25
+        },
+        {
+            "name": "wangwu",
+            "age": 22
+        }
+    ]
+}

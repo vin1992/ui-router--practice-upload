@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"  ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+ <script src="./angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="myController">
+        <input type="text" ng-model="key">
+        <ul>
+          <li ng-repeat="item in list">
+            {{item.name|firstUpper}}--{{item.age}}
+          </li>
+        </ul>
+        <p>{{key}}</p>
+    </div>
+    <script type="text/javascript">
+        var app = angular.module('app',[]);
+        app.controller('myController',function ($scope,$timeout,myService) {
+           /*myService.getUserInfo().success(function (data) {
+            $scope.list = data.userInfo;
+            // console.log(data);
+           })*/
+           var timeout;
+           $scope.$watch('key',function (keywords) {
+              if (keywords) {
+                  if (timeout) $timeout.cancel(timeout);
+                  timeout = $timeout(function () {
+                  myService.getUserInfo().then(function (res) {
+                   var arr = res.data.userInfo;
+                   var tmp = [];
+                   for (var i = 0; i < arr.length; i++) {
+                      if (arr[i].name.indexOf(keywords) > -1) {
+                        tmp.push(arr[i]);
+                      }
+                   }
+                   $scope.list = tmp;
+                   // console.log(res,res.data.userInfo);
+                 },function (rej) {
+                    throw new Error("请求错误")
+                 })
+                },350)
+              }
+           })
+
+        })
+/*        app.factory('myService', function($http) {
+            var serviceIns = {};
+            serviceIns.getUserInfo = function () {
+              return  $http({
+                url:'./db.json',
+                method:"GET"
+               });
+
+            }
+            return serviceIns;
+        })*/
+        app.service('myService', function($http){
+            this.getUserInfo = function () {
+              return $http({
+                url:'./db.json',
+                method:"GET"
+              });
+            }
+        })
+        app.filter('firstUpper',function () {
+          return function (input) {
+            if (input) {
+              return input[0].toUpperCase() + input.slice(1);
+            }
+          }
+        })
+    </script>
+</body>
+</html>
